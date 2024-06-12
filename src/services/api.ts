@@ -13,3 +13,8 @@ export async function getProducts() {
     throw new Error("error is here");
   }
 }
+
+export async function getProduct(id: string | number) {
+  const { data } = await client(`/products/${id}`);
+  return data;
+}

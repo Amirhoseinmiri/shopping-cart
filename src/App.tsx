@@ -4,17 +4,20 @@ import Store from "./pages/Store";
 import Layout from "./components/Layout";
 import Product from "./pages/Product";
 import ShoppingCart from "./pages/ShoppingCart";
+import { ShoppingCartProvider } from "./context/ShoppingCartContext";
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/store" element={<Store />} />
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/cart" element={<ShoppingCart />} />
-      </Routes>
-    </Layout>
+    <ShoppingCartProvider>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/store" element={<Store />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/cart" element={<ShoppingCart />} />
+        </Routes>
+      </Layout>
+    </ShoppingCartProvider>
   );
 }
 
