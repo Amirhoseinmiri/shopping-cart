@@ -1,18 +1,18 @@
 import Button from "../components/Button/Button";
 import CartItem from "../components/CartItem";
 import Container from "../components/Container";
-// import { useShoppingCartContext } from "../hooks/useShoppingCartContext";
+import { useShoppingCartContext } from "../hooks/useShoppingCartContext";
 
 const ShoppingCart = () => {
-  //   const { cartItems } = useShoppingCartContext();
+  const { cartItems } = useShoppingCartContext();
 
   return (
     <div>
       <Container>
         <div className="">
-          <CartItem />
-          <CartItem />
-          <CartItem />
+          {cartItems.map((item) => (
+            <CartItem id={item.id} qty={item.qty} />
+          ))}
         </div>
         <div className="bg-gray-200 rounded p-6">
           <p className="text-right">قیمت کل: 2000</p>

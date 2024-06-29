@@ -5,6 +5,8 @@ import Layout from "./components/Layout";
 import Product from "./pages/Product";
 import ShoppingCart from "./pages/ShoppingCart";
 import { ShoppingCartProvider } from "./context/ShoppingCartContext";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -14,7 +16,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/store" element={<Store />} />
           <Route path="/product/:id" element={<Product />} />
-          <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/cart" element={<ShoppingCart />} />
+          </Route>
         </Routes>
       </Layout>
     </ShoppingCartProvider>

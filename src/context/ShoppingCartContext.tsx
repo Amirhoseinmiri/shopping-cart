@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useState } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 interface IShoppingCart {
   children: ReactNode;
 }
@@ -15,11 +16,17 @@ interface IShoppingCartContext {
   handleDecreaseQTY: (id: number) => void;
   getProductQTY: (id: number) => number;
   handleDeleteProduct: (id: number) => void;
+  isLogin: boolean;
+  handleLogin: () => void;
+  handleLogout: () => void;
 }
 export const ShoppingCartContext = createContext({} as IShoppingCartContext);
 
 export function ShoppingCartProvider({ children }: IShoppingCart) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>(
+    "cartItems",
+    []
+  );
 
   const handleIncreaseQTY = (id: number) => {
     setCartItems((prev) => {
@@ -63,14 +70,25 @@ export function ShoppingCartProvider({ children }: IShoppingCart) {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
   const cartQTY = cartItems.reduce((totalQTY, item) => totalQTY + item.qty, 0);
+  const [isLogin, setIsLogin] = useState(false);
+
+  const handleLogin = () => {
+    setIsLogin(true);
+  };
+  const handleLogout = () => {
+    setIsLogin(false);
+  };
   return (
     <ShoppingCartContext.Provider
       value={{
         cartItems,
         cartQTY,
         handleIncreaseQTY,
+        isLogin,
+        handleLogin,
         handleDecreaseQTY,
         getProductQTY,
+        handleLogout,
         handleDeleteProduct,
       }}
     >
