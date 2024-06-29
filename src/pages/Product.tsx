@@ -9,13 +9,19 @@ import { useShoppingCartContext } from "../hooks/useShoppingCartContext";
 const Product = () => {
   const param = useParams<{ id: string }>();
   const [product, setProduct] = useState<ProductType>();
-  const { handleIncreaseQTY, cartItems } = useShoppingCartContext();
+  const {
+    getProductQTY,
+    handleDeleteProduct,
+    handleDecreaseQTY,
+    handleIncreaseQTY,
+    cartItems,
+  } = useShoppingCartContext();
 
   useEffect(() => {
     getProduct(param.id as string).then((res) => {
       setProduct(res);
     });
-  }, []);
+  }, [param.id]);
   console.log(cartItems);
   return (
     <div>
@@ -35,15 +41,67 @@ const Product = () => {
               alt="product image"
               width={300}
             />
-            <div>
+            {getProductQTY(parseInt(param.id as string)) === 0 ? (
               <Button
-                onClick={() => handleIncreaseQTY(parseInt(param.id as string))}
                 className="mt-2 w-full"
                 variant="primary"
+                onClick={() => handleIncreaseQTY(parseInt(param.id as string))}
               >
                 Add to Cart
               </Button>
-            </div>
+            ) : (
+              <>
+                <div className="flex gap4">
+                  <Button
+                    className="mt-2 w-full"
+                    variant="primary"
+                    onClick={() =>
+                      handleIncreaseQTY(parseInt(param.id as string))
+                    }
+                  >
+                    +
+                  </Button>
+                  <span className="flex justify-center items-center p-2 border border-dotted m-2 border-black">
+                    {getProductQTY(parseInt(param.id as string))}
+                  </span>
+                  <Button
+                    className="mt-2 w-full"
+                    variant="primary"
+                    onClick={() =>
+                      handleDecreaseQTY(parseInt(param.id as string))
+                    }
+                  >
+                    -
+                  </Button>
+                </div>
+                <Button
+                  className="mt-2 w-full !py-3"
+                  variant="danger"
+                  onClick={() =>
+                    handleDeleteProduct(parseInt(param.id as string))
+                  }
+                >
+                  حذف
+                </Button>
+              </>
+            )}
+            {/* <div>
+              <Button
+              className="mt-2 w-full"
+              variant="primary"
+              onClick={() => handleIncreaseQTY(parseInt(param.id as string))}
+              >
+              Add to Cart
+              </Button>
+              <span>{getProductQTY(parseInt(param.id as string))}</span>
+              <Button
+              className="mt-2 w-full"
+              variant="primary"
+              onClick={() => handleDecreaseQTY(parseInt(param.id as string))}
+              >
+              -
+              </Button>
+            </div> */}
           </div>
         </div>
       </Container>
